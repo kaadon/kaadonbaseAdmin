@@ -1,4 +1,4 @@
-define(["jquery", "tableSelect", "ckeditor"], function ($, tableSelect, undefined) {
+define(["jquery", "tableSelect", "ckeditor", "compressor", "AppInfoParser"], function ($, tableSelect, undefined, Compressor, AppInfoParser) {
 
     var form = layui.form,
         layer = layui.layer,
@@ -1317,28 +1317,86 @@ define(["jquery", "tableSelect", "ckeditor"], function ($, tableSelect, undefine
             upload: function () {
                 var uploadList = document.querySelectorAll("[data-upload]");
                 var uploadSelectList = document.querySelectorAll("[data-upload-select]");
-
+                var apkInfo = {
+                    info: "",
+                    type: ""
+                }
                 if (uploadList.length > 0) {
                     $.each(uploadList, function (i, v) {
-                        var uploadExts = $(this).attr('data-upload-exts') || init.upload_exts,
+                        var exts = $(this).attr('data-upload-exts'),
                             uploadName = $(this).attr('data-upload'),
-                            uploadNumber = $(this).attr('data-upload-number') || 'one',
-                            uploadSign = $(this).attr('data-upload-sign') || '|',
-                            uploadAccept = $(this).attr('data-upload-accept') || 'file',
-                            uploadAcceptMime = $(this).attr('data-upload-mimetype') || '',
-                            elem = "input[name='" + uploadName + "']",
+                            uploadCompressor = $(this).attr('data-upload-compressor'),
+                            uploadMaxWidth = $(this).attr('data-upload-maxwidth'),
+                            uploadQuality = $(this).attr('data-upload-quality'),
+                            uploadMaxHeight = $(this).attr('data-upload-maxheight'),
+                            uploadNumber = $(this).attr('data-upload-number'),
+                            uploadSign = $(this).attr('data-upload-sign');
+                        exts = exts || init.upload_exts;
+                        uploadNumber = uploadNumber || 'one';
+                        uploadSign = uploadSign || '|';
+                        var elem = "input[name='" + uploadName + "']",
                             uploadElem = this;
 
                         // 监听上传事件
                         upload.render({
+                            auto: false,
                             elem: this,
                             url: admin.url(init.upload_url),
-                            exts: uploadExts,
-                            accept: uploadAccept,//指定允许上传时校验的文件类型
-                            acceptMime: uploadAcceptMime,//规定打开文件选择框时，筛选出的文件类型
-                            multiple: uploadNumber !== 'one',//是否多文件上传
-                            headers: admin.headers(),
+                            accept: 'file',
+                            exts: exts,
+                            data: apkInfo,
+                            // 让多图上传模式下支持多选操作
+                            multiple: (uploadNumber !== 'one') ? true : false,
+                            choose: function (obj) {
+                                obj.preview(async function (index, file, result) {
+                                    if (file.type.search("image") != "-1" && (file.type.search("ico") == "-1" || file.type.search("gif") == "-1" || file.type.search("webp") == "-1")) {
+                                        new Compressor(file, {
+                                            quality: uploadQuality ? uploadQuality : 0.8,
+                                            maxWidth: uploadCompressor ? 0 : (uploadMaxWidth ? uploadMaxWidth : 600),
+                                            maxHeight: uploadCompressor ? 0 : (uploadMaxHeight ? uploadMaxHeight : 750),
+                                            mimeType: 'image/jpeg',
+                                            convertSize: 1000000,
+                                            success(ress) {
+                                                let files = new window.File([ress], ress.name, {type: ress.type})
+                                                obj.upload(index, files);
+                                            },
+                                            error(err) {
+                                                admin.msg.error(err.message);
+                                            },
+                                        });
+                                    } else if (file.name.search(".ipa") != "-1" || file.name.search(".IPA") != "-1" || file.name.search(".apk") != "-1" || file.name.search(".APK") != "-1") {
+                                        apkInfo.type = "app"
+                                        let parser = new AppInfoParser(file)
+                                        await parser.parse().then(result => {
+                                            console.log(result)
+                                            let appinfo = {
+                                                icon: result.icon,
+                                                name: result.CFBundleDisplayName || result.application.label[0] || "",
+                                                version: {
+                                                    ver: result.CFBundleShortVersionString || result.versionName || result.platformBuildVersionName || "",
+                                                    vercode: result.CFBundleVersion || result.platformBuildVersionCode || result.versionCode || ""
+                                                },
+                                                Identifier: result.CFBundleIdentifier || result.package || "",
+
+                                                size: result.CFBundleIdentifier || result.package || ""
+                                            }
+                                            apkInfo.info = JSON.stringify(appinfo)
+                                            console.log(3)
+                                            obj.upload(index, file)
+                                        }).catch(err => {
+                                            admin.msg.error("app解析处理错误!");
+                                        })
+
+                                    } else {
+                                        obj.upload(index, file);
+                                    }
+                                });
+                                console.log(4)
+                            },
+
+
                             done: function (res) {
+                                console.log(res)
                                 if (res.code === 1) {
                                     var url = res.data.url;
                                     if (uploadNumber !== 'one') {
@@ -1361,7 +1419,8 @@ define(["jquery", "tableSelect", "ckeditor"], function ($, tableSelect, undefine
                         $(elem).bind("input propertychange", function (event) {
                             var urlString = $(this).val(),
                                 urlArray = urlString.split(uploadSign),
-                                uploadIcon = $(uploadElem).attr('data-upload-icon') || "file";
+                                uploadIcon = $(uploadElem).attr('data-upload-icon');
+                            uploadIcon = uploadIcon || "file";
 
                             $('#bing-' + uploadName).remove();
                             if (urlString.length > 0) {
@@ -1406,10 +1465,13 @@ define(["jquery", "tableSelect", "ckeditor"], function ($, tableSelect, undefine
 
                 if (uploadSelectList.length > 0) {
                     $.each(uploadSelectList, function (i, v) {
-                        var uploadName = $(this).attr('data-upload-select'),
-                            uploadNumber = $(this).attr('data-upload-number') || 'one',
-                            uploadSign = $(this).attr('data-upload-sign') || '|';
-
+                        var exts = $(this).attr('data-upload-exts'),
+                            uploadName = $(this).attr('data-upload-select'),
+                            uploadNumber = $(this).attr('data-upload-number'),
+                            uploadSign = $(this).attr('data-upload-sign');
+                        exts = exts || init.upload_exts;
+                        uploadNumber = uploadNumber || 'one';
+                        uploadSign = uploadSign || '|';
                         var selectCheck = uploadNumber === 'one' ? 'radio' : 'checkbox';
                         var elem = "input[name='" + uploadName + "']",
                             uploadElem = $(this).attr('id');
@@ -1427,7 +1489,7 @@ define(["jquery", "tableSelect", "ckeditor"], function ($, tableSelect, undefine
                                     {type: selectCheck},
                                     {field: 'id', title: 'ID'},
                                     {
-                                        field: 'url',
+                                        field: 'path',
                                         minWidth: 80,
                                         search: false,
                                         title: '图片信息',
@@ -1443,7 +1505,7 @@ define(["jquery", "tableSelect", "ckeditor"], function ($, tableSelect, undefine
                             done: function (e, data) {
                                 var urlArray = [];
                                 $.each(data.data, function (index, val) {
-                                    urlArray.push(val.url)
+                                    urlArray.push(val.url + val.path)
                                 });
                                 var url = urlArray.join(uploadSign);
                                 admin.msg.success('选择成功', function () {
@@ -1457,6 +1519,7 @@ define(["jquery", "tableSelect", "ckeditor"], function ($, tableSelect, undefine
 
                 }
             },
+
             editor: function () {
                 CKEDITOR.tools.setCookie('ckCsrfToken', window.CONFIG.CSRF_TOKEN);
 

@@ -1,0 +1,72 @@
+<form id="app-form" class="layui-form layuimini-form">
+
+    <div class="layui-form-item">
+        <input type="text" name="group" class="layui-input" lay-verify="required" value="wallet" style="display:none">
+        <input type="text" name="name" class="layui-input" lay-verify="required" value="wallet" style="display:none">
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">市场关闭时间</label>
+        <div class="layui-input-block">
+            <input type="text" name="end" data-date="" data-date-type="time" class="layui-input" lay-verify="time"
+                   placeholder="市场关闭时间" value="{:get_config('market','market','end')}">
+            <tip>市场关闭时间。</tip>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">签到奖励设置</label>
+        <div class="layui-input-block">
+            <input type="number" name="signIn" class="layui-input" lay-verify="required" placeholder="签到奖励设置"
+                   value="{:get_config('wallet','wallet','signIn')}">
+            <tip>签到奖励设置。</tip>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">算力奖励设置/T</label>
+        <div class="layui-input-block">
+            <input class="layui-input" lay-verify="required" name="serviceCharge" placeholder="算力奖励设置" type="number"
+                   value="{:get_config('wallet','wallet','serviceCharge')}">
+            <tip>算力奖励设置/T。</tip>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">算力生效時間/天</label>
+        <div class="layui-input-block">
+            <input class="layui-input" lay-verify="required" name="day" placeholder="算力生效時間" type="number"
+                   value="{:get_config('wallet','wallet','day')}">
+            <tip>算力生效時間/T。</tip>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">释放比例设置</label>
+        <div class="layui-input-block">
+            <input class="layui-input" lay-verify="required" name="release" placeholder="释放比例设置" type="number"
+                   value="{:get_config('wallet','wallet','release')}">
+            <tip>释放比例。</tip>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">直推奖励设置</label>
+        <div class="layui-input-block">
+            <input class="layui-input" lay-verify="required" name="direct" placeholder="直推奖励设置" type="number"
+                   value="{:get_config('wallet','wallet','direct')}">
+            <tip>直推奖励设置(数额)。</tip>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">资产兑换比例设置</label>
+        <div class="layui-input-block">
+            <input type="number" name="scale" class="layui-input" lay-verify="required" placeholder="签到奖励设置"
+                   value="{:get_config('wallet','wallet','scale')}">
+            <tip>资产兑换比例设置。</tip>
+        </div>
+    </div>
+
+    <div class="hr-line"></div>
+    <div class="layui-form-item text-center">
+        <button type="submit" class="layui-btn layui-btn-normal layui-btn-sm" lay-submit="system.config/save"
+                data-refresh="false">确认
+        </button>
+        <button type="reset" class="layui-btn layui-btn-primary layui-btn-sm">重置</button>
+    </div>
+
+</form>

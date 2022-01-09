@@ -67,9 +67,9 @@ trait Curd
             try {
                 $save = $this->model->save($post);
             } catch (\Exception $e) {
-                $this->error('保存失败:' . $e->getMessage());
+                $this->error_view('保存失败:' . $e->getMessage());
             }
-            $save ? $this->success('保存成功') : $this->error('保存失败');
+            $save ? $this->success_view('保存成功') : $this->error_view('保存失败');
         }
         return $this->fetch();
     }
@@ -80,7 +80,7 @@ trait Curd
     public function edit($id)
     {
         $row = $this->model->find($id);
-        empty($row) && $this->error('数据不存在');
+        empty($row) && $this->error_view('数据不存在');
         if ($this->request->isPost()) {
             $post = $this->request->post();
             $rule = [];
@@ -88,9 +88,9 @@ trait Curd
             try {
                 $save = $row->save($post);
             } catch (\Exception $e) {
-                $this->error('保存失败');
+                $this->error_view('保存失败');
             }
-            $save ? $this->success('保存成功') : $this->error('保存失败');
+            $save ? $this->success_view('保存成功') : $this->error_view('保存失败');
         }
         $this->assign('row', $row);
         return $this->fetch();
@@ -103,13 +103,13 @@ trait Curd
     {
         $this->checkPostRequest();
         $row = $this->model->whereIn('id', $id)->select();
-        $row->isEmpty() && $this->error('数据不存在');
+        $row->isEmpty() && $this->error_view('数据不存在');
         try {
             $save = $row->delete();
         } catch (\Exception $e) {
-            $this->error('删除失败');
+            $this->error_view('删除失败');
         }
-        $save ? $this->success('删除成功') : $this->error('删除失败');
+        $save ? $this->success_view('删除成功') : $this->error_view('删除失败');
     }
 
     /**
@@ -154,19 +154,19 @@ trait Curd
         $this->validate($post, $rule);
         $row = $this->model->find($post['id']);
         if (!$row) {
-            $this->error('数据不存在');
+            $this->error_view('数据不存在');
         }
         if (!in_array($post['field'], $this->allowModifyFields)) {
-            $this->error('该字段不允许修改：' . $post['field']);
+            $this->error_view('该字段不允许修改：' . $post['field']);
         }
         try {
             $row->save([
                 $post['field'] => $post['value'],
             ]);
         } catch (\Exception $e) {
-            $this->error($e->getMessage());
+            $this->error_view($e->getMessage());
         }
-        $this->success('保存成功');
+        $this->success_view('保存成功');
     }
 
 }

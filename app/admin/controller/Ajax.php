@@ -38,8 +38,8 @@ class Ajax extends AdminController
         $menuService = new MenuService(session('admin.id'));
         $data        = [
             'logoInfo' => [
-                'title' => sysconfig('site', 'logo_title'),
-                'image' => sysconfig('site', 'logo_image'),
+                'title' => get_config('site', 'site', 'logo_title'),
+                'image' => get_config('site', 'site', 'logo_image'),
                 'href'  => __url('index/index'),
             ],
             'homeInfo' => $menuService->getHomeInfo(),
@@ -55,7 +55,7 @@ class Ajax extends AdminController
     public function clearCache()
     {
         Cache::clear();
-        $this->success('清理缓存成功');
+        $this->success_view('清理缓存成功');
     }
 
     /**
@@ -65,13 +65,13 @@ class Ajax extends AdminController
     {
         $this->checkPostRequest();
         $data         = [
-            'upload_type' => $this->request->post('upload_type'),
-            'file'        => $this->request->file('file'),
+//            'upload_type' => $this->request->post('upload_type'),
+            'file' => $this->request->file('file'),
         ];
-        $uploadConfig = sysconfig('upload');
+        $uploadConfig = get_config('upload', 'default');
         empty($data['upload_type']) && $data['upload_type'] = $uploadConfig['upload_type'];
         $rule = [
-            'upload_type|指定上传类型有误' => "in:{$uploadConfig['upload_allow_type']}",
+//            'upload_type|指定上传类型有误' => "in:{$uploadConfig['upload_allow_type']}",
             'file|文件'              => "require|file|fileExt:{$uploadConfig['upload_allow_ext']}|fileSize:{$uploadConfig['upload_allow_size']}",
         ];
         $this->validate($data, $rule);
@@ -82,12 +82,12 @@ class Ajax extends AdminController
                 ->setFile($data['file'])
                 ->save();
         } catch (\Exception $e) {
-            $this->error($e->getMessage());
+            $this->error_view($e->getMessage());
         }
         if ($upload['save'] == true) {
-            $this->success($upload['msg'], ['url' => $upload['url']]);
+            $this->success_view($upload['msg'], ['url' => $upload['url']]);
         } else {
-            $this->error($upload['msg']);
+            $this->error_view($upload['msg']);
         }
     }
 
@@ -99,13 +99,13 @@ class Ajax extends AdminController
     {
         $this->checkPostRequest();
         $data         = [
-            'upload_type' => $this->request->post('upload_type'),
-            'file'        => $this->request->file('upload'),
+//            'upload_type' => $this->request->post('upload_type'),
+            'file' => $this->request->file('upload'),
         ];
-        $uploadConfig = sysconfig('upload');
+        $uploadConfig = get_config('upload', 'default');
         empty($data['upload_type']) && $data['upload_type'] = $uploadConfig['upload_type'];
         $rule = [
-            'upload_type|指定上传类型有误' => "in:{$uploadConfig['upload_allow_type']}",
+//            'upload_type|指定上传类型有误' => "in:{$uploadConfig['upload_allow_type']}",
             'file|文件'              => "require|file|fileExt:{$uploadConfig['upload_allow_ext']}|fileSize:{$uploadConfig['upload_allow_size']}",
         ];
         $this->validate($data, $rule);
@@ -116,7 +116,7 @@ class Ajax extends AdminController
                 ->setFile($data['file'])
                 ->save();
         } catch (\Exception $e) {
-            $this->error($e->getMessage());
+            $this->error_view($e->getMessage());
         }
         if ($upload['save'] == true) {
             return json([
@@ -129,7 +129,7 @@ class Ajax extends AdminController
                 'url'      => $upload['url'],
             ]);
         } else {
-            $this->error($upload['msg']);
+            $this->error_view($upload['msg']);
         }
     }
 

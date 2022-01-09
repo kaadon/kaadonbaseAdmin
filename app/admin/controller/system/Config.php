@@ -13,9 +13,9 @@
 namespace app\admin\controller\system;
 
 
-use app\admin\model\SystemConfig;
 use app\admin\service\TriggerService;
 use app\common\controller\AdminController;
+use app\common\model\SystemConfig;
 use KaadonAdmin\annotation\ControllerAnnotation;
 use KaadonAdmin\annotation\NodeAnotation;
 use think\App;
@@ -41,28 +41,62 @@ class Config extends AdminController
     {
         return $this->fetch();
     }
-
     /**
      * @NodeAnotation(title="保存")
      */
     public function save()
     {
-        $this->checkPostRequest();
         $post = $this->request->post();
         try {
-            foreach ($post as $key => $val) {
-                $this->model
-                    ->where('name', $key)
-                    ->update([
-                        'value' => $val,
-                    ]);
+            $group = $post['group'];
+            $name  = $post['name'];
+            if (empty($group) || empty($name)) {
+                $this->error_view('配置为空!');
             }
-            TriggerService::updateMenu();
-            TriggerService::updateSysconfig();
-        } catch (\Exception $e) {
-            $this->error('保存失败');
+            //拼接 $group.'_'.$name
+            $groupName    = $group . '_' . $name;
+            $MethodExists = method_exists(self::class, $groupName);
+            if ($MethodExists) {
+                $post = $this->$groupName($post);
+            }
+            unset($post['group']);
+            unset($post['name']);
+
+
+            if ($this->model->getInfo($group, $name)) {
+                $this->model->setUpdate($group, $name, $post);
+            } else {
+                $this->model->setAdd($group, $name, $post);
+            }
+//            TriggerService::updateMenu();
+        } catch (Exception $e) {
+            $this->error_view($e->getMessage());
         }
-        $this->success('保存成功');
+        $this->success_view('保存成功');
     }
+
+    private function upload_default(array $data)
+    {
+        if (array_key_exists('upload_allow_ext', $data)) {
+            $data['upload_allow_ext'] = 'doc,gif,ico,icon,jpg,jpeg,png.webp,mp3,mp4,p12,pem,png,rar';
+        }
+
+        return $data;
+    }
+
+    private function site_rotation(array $data)
+    {
+        $data = [
+            'rotation' => [
+                1 => $data['rotation0'],
+                2 => $data['rotation1'],
+                3 => $data['rotation2'],
+            ],
+            'slice'    => $data['slice']
+        ];
+
+        return $data;
+    }
+
 
 }

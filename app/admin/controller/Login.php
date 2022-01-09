@@ -34,7 +34,7 @@ class Login extends AdminController
         $action = $this->request->action();
         if (!empty(session('admin')) && !in_array($action, ['out'])) {
             $adminModuleName = config('app.admin_alias_name');
-            $this->success('已登录，无需再次登录', [], __url("@{$adminModuleName}"));
+            $this->success_view('已登录，无需再次登录', [], __url("@{$adminModuleName}"));
         }
     }
 
@@ -59,13 +59,13 @@ class Login extends AdminController
             $this->validate($post, $rule);
             $admin = SystemAdmin::where(['username' => $post['username']])->find();
             if (empty($admin)) {
-                $this->error('用户不存在');
+                $this->error_view('用户不存在');
             }
 //            if (password($post['password']) != $admin->password) {
-//                $this->error('密码输入有误');
+//                $this->error_view('密码输入有误');
 //            }
             if ($admin->status == 0) {
-                $this->error('账号已被禁用');
+                $this->error_view('账号已被禁用');
             }
             $admin->login_num += 1;
             $admin->save();
@@ -73,7 +73,7 @@ class Login extends AdminController
             unset($admin['password']);
             $admin['expire_time'] = $post['keep_login'] == 1 ? true : time() + 7200;
             session('admin', $admin);
-            $this->success('登录成功');
+            $this->success_view('登录成功');
         }
         $this->assign('captcha', $captcha);
         $this->assign('demo', $this->isDemo);
@@ -87,7 +87,7 @@ class Login extends AdminController
     public function out()
     {
         session('admin', null);
-        $this->success('退出登录成功');
+        $this->success_view('退出登录成功');
     }
 
     /**

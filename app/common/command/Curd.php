@@ -99,7 +99,7 @@ class Curd extends Command
         }
 
         if (empty($table)) {
-            CliEcho::error('请设置主表');
+            CliEcho::error_view('请设置主表');
             return false;
         }
 
@@ -144,7 +144,7 @@ class Curd extends Command
                         throw new Exception("取消文件CURD生成操作");
                     }
                 }
-                CliEcho::success('自动生成CURD成功');
+                CliEcho::success_view('自动生成CURD成功');
             } else {
                 $output->info(">>>>>>>>>>>>>>>");
                 foreach ($fileList as $key => $val) {
@@ -157,15 +157,15 @@ class Curd extends Command
                     throw new Exception("取消删除文件操作");
                 }
                 $result = $build->delete();
-                CliEcho::success('>>>>>>>>>>>>>>>');
-                CliEcho::success('删除自动生成CURD文件成功');
+                CliEcho::success_view('>>>>>>>>>>>>>>>');
+                CliEcho::success_view('删除自动生成CURD文件成功');
             }
-            CliEcho::success('>>>>>>>>>>>>>>>');
+            CliEcho::success_view('>>>>>>>>>>>>>>>');
             foreach ($result as $vo) {
-                CliEcho::success($vo);
+                CliEcho::success_view($vo);
             }
         } catch (\Exception $e) {
-            CliEcho::error($e->getMessage());
+            CliEcho::error_view($e->getMessage());
             return false;
         }
     }

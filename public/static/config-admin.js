@@ -22,6 +22,8 @@ require.config({
         "autocomplete": ["plugs/lay-module/autocomplete/autocomplete"],
         "vue": ["plugs/vue-2.6.10/vue.min"],
         "ckeditor": ["plugs/ckeditor4/ckeditor"],
+        "compressor": ["plugs/Compressor/1.0.6/dist/compressor.min"],
+        "AppInfoParser": ["plugs/app-info-parser/app-info-parser.min"],
     }
 });
 

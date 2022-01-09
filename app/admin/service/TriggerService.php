@@ -1,18 +1,19 @@
 <?php
 
 // +----------------------------------------------------------------------
-// | kaadonAdmin
+// | EasyAdmin
 // +----------------------------------------------------------------------
-// | AUTHOR: KAADON@GMAIL.COM
+// | PHP交流群: 763822524
 // +----------------------------------------------------------------------
-// | 开源协议  https://mit-license.org 
+// | 开源协议  https://mit-license.org
 // +----------------------------------------------------------------------
-// | github开源项目：https://github.com/kaadon/kaadonAdmin
+// | github开源项目：https://github.com/zhongshaofa/EasyAdmin
 // +----------------------------------------------------------------------
 
 namespace app\admin\service;
 
 
+use app\common\cache\SystemConfigCache;
 use think\facade\Cache;
 
 class TriggerService
@@ -52,9 +53,9 @@ class TriggerService
      * 更新系统设置缓存
      * @return bool
      */
-    public static function updateSysconfig()
+    public static function updateGetConfig()
     {
-        Cache::tag('sysconfig')->clear();
+        (new SystemConfigCache())->delTag();
         return true;
     }
 

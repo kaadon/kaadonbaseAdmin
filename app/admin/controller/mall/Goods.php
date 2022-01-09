@@ -66,7 +66,7 @@ class Goods extends AdminController
     public function stock($id)
     {
         $row = $this->model->find($id);
-        empty($row) && $this->error('数据不存在');
+        empty($row) && $this->error_view('数据不存在');
         if ($this->request->isPost()) {
             $post = $this->request->post();
             $rule = [];
@@ -76,9 +76,9 @@ class Goods extends AdminController
                 $post['stock']       = $row->stock + $post['stock'];
                 $save                = $row->save($post);
             } catch (\Exception $e) {
-                $this->error('保存失败');
+                $this->error_view('保存失败');
             }
-            $save ? $this->success('保存成功') : $this->error('保存失败');
+            $save ? $this->success_view('保存成功') : $this->error_view('保存失败');
         }
         $this->assign('row', $row);
         return $this->fetch();

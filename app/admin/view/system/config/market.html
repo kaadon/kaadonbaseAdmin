@@ -1,0 +1,112 @@
+<form id="app-form" class="layui-form layuimini-form">
+
+    <div class="layui-form-item">
+        <input type="text" name="group" class="layui-input" lay-verify="required" value="market" style="display:none">
+        <input type="text" name="name" class="layui-input" lay-verify="required" value="market" style="display:none">
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">市场是否开启</label>
+        <div class="layui-input-block">
+            <input type="checkbox" name="is_market" lay-skin="switch" lay-text="开启|关闭" {eq name="is_market" value="on"
+                   }checked{/eq}>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">市场关闭提示语(市场关闭显示)</label>
+        <div class="layui-input-block">
+            <input type="text" name="market_close_prompt" class="layui-input" lay-verify="required"
+                   placeholder="市场关闭提示语" value="{:get_config('market','market','market_close_prompt')}">
+            <tip>市场关闭提示语。</tip>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">市场开启时间</label>
+        <div class="layui-input-block">
+            <input type="text" name="start" data-date="" data-date-type="time" class="layui-input" lay-verify="time"
+                   placeholder="市场开启时间" value="{:get_config('market','market','start')}">
+            <tip>市场开启时间。</tip>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">市场关闭时间</label>
+        <div class="layui-input-block">
+            <input type="text" name="end" data-date="" data-date-type="time" class="layui-input" lay-verify="time"
+                   placeholder="市场关闭时间" value="{:get_config('market','market','end')}">
+            <tip>市场关闭时间。</tip>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">交易手续费设置</label>
+        <div class="layui-input-block">
+            <input type="text" name="fee" class="layui-input" lay-verify="required" placeholder="交易手续费设置"
+                   value="{:get_config('market','market','fee')}">
+            <tip>交易手续费设置。</tip>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">买入订单未完成最大单数</label>
+        <div class="layui-input-block">
+            <input type="number" name="buy_max_count" class="layui-input" lay-verify="required"
+                   placeholder="买入订单未完成最大单数" value="{:get_config('market','market','buy_max_count')}">
+            <tip>买入订单未完成最大单数。</tip>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">卖出订单未完成最大单数</label>
+        <div class="layui-input-block">
+            <input type="number" name="sell_max_count" class="layui-input" lay-verify="required"
+                   placeholder="买入订单未完成最大单数" value="{:get_config('market','market','buy_max_count')}">
+            <tip>卖出订单未完成最大单数。</tip>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">买入订单最大数量</label>
+        <div class="layui-input-block">
+            <input type="number" name="buy_max_number" class="layui-input" lay-verify="required" placeholder="买入订单最大数量"
+                   value="{:get_config('market','market','buy_max_number')}">
+            <tip>买入订单最大数量。</tip>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">买入订单最小数量</label>
+        <div class="layui-input-block">
+            <input type="number" name="buy_min_number" class="layui-input" lay-verify="required" placeholder="买入订单最小数量"
+                   value="{:get_config('market','market','buy_min_number')}">
+            <tip>买入订单最小数量。</tip>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">卖出订单最大数量</label>
+        <div class="layui-input-block">
+            <input type="number" name="sell_max_number" class="layui-input" lay-verify="required" placeholder="卖出订单最大数量"
+                   value="{:get_config('market','market','sell_max_number')}">
+            <tip>卖出订单最大数量。</tip>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">卖出订单最小数量</label>
+        <div class="layui-input-block">
+            <input type="number" name="sell_min_number" class="layui-input" lay-verify="required" placeholder="卖出订单最小数量"
+                   value="{:get_config('market','market','sell_min_number')}">
+            <tip>卖出订单最小数量。</tip>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">订单保护时间(秒)</label>
+        <div class="layui-input-block">
+            <input type="number" name="trade_safetime" class="layui-input" lay-verify="required" placeholder="订单保护时间"
+                   value="{:get_config('market','market','trade_safetime')}">
+            <tip>订单保护时间。</tip>
+        </div>
+    </div>
+    <div class="hr-line"></div>
+    <div class="layui-form-item text-center">
+        <button type="submit" class="layui-btn layui-btn-normal layui-btn-sm" lay-submit="system.config/save"
+                data-refresh="false">确认
+        </button>
+        <button type="reset" class="layui-btn layui-btn-primary layui-btn-sm">重置</button>
+    </div>
+
+</form>

@@ -53,10 +53,10 @@ class Index extends AdminController
         $row = (new SystemAdmin())
             ->withoutField('password')
             ->find($id);
-        empty($row) && $this->error('用户信息不存在');
+        empty($row) && $this->error_view('用户信息不存在');
         if ($this->request->isPost()) {
             $post = $this->request->post();
-            $this->isDemo && $this->error('演示环境下不允许修改');
+            $this->isDemo && $this->error_view('演示环境下不允许修改');
             $rule = [];
             $this->validate($post, $rule);
             try {
@@ -64,9 +64,9 @@ class Index extends AdminController
                     ->allowField(['head_img', 'phone', 'remark', 'update_time'])
                     ->save($post);
             } catch (\Exception $e) {
-                $this->error('保存失败');
+                $this->error_view('保存失败');
             }
-            $save ? $this->success('保存成功') : $this->error('保存失败');
+            $save ? $this->success_view('保存成功') : $this->error_view('保存失败');
         }
         $this->assign('row', $row);
         return $this->fetch();
@@ -86,18 +86,18 @@ class Index extends AdminController
             ->withoutField('password')
             ->find($id);
         if (!$row) {
-            $this->error('用户信息不存在');
+            $this->error_view('用户信息不存在');
         }
         if ($this->request->isPost()) {
             $post = $this->request->post();
-            $this->isDemo && $this->error('演示环境下不允许修改');
+            $this->isDemo && $this->error_view('演示环境下不允许修改');
             $rule = [
                 'password|登录密码'       => 'require',
                 'password_again|确认密码' => 'require',
             ];
             $this->validate($post, $rule);
             if ($post['password'] != $post['password_again']) {
-                $this->error('两次密码输入不一致');
+                $this->error_view('两次密码输入不一致');
             }
 
             try {
@@ -105,12 +105,12 @@ class Index extends AdminController
                     'password' => password($post['password']),
                 ]);
             } catch (\Exception $e) {
-                $this->error('保存失败');
+                $this->error_view('保存失败');
             }
             if ($save) {
-                $this->success('保存成功');
+                $this->success_view('保存成功');
             } else {
-                $this->error('保存失败');
+                $this->error_view('保存失败');
             }
         }
         $this->assign('row', $row);

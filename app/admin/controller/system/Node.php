@@ -68,7 +68,7 @@ class Node extends AdminController
     {
         $this->checkPostRequest();
         $nodeList = (new NodeService())->getNodelist();
-        empty($nodeList) && $this->error('暂无需要更新的系统节点');
+        empty($nodeList) && $this->error_view('暂无需要更新的系统节点');
         $model = new SystemNode();
         try {
             if ($force == 1) {
@@ -93,9 +93,9 @@ class Node extends AdminController
             $model->saveAll($nodeList);
             TriggerService::updateNode();
         } catch (\Exception $e) {
-            $this->error('节点更新失败');
+            $this->error_view('节点更新失败');
         }
-        $this->success('节点更新成功');
+        $this->success_view('节点更新成功');
     }
 
     /**
@@ -114,8 +114,8 @@ class Node extends AdminController
             }
             TriggerService::updateNode();
         } catch (\Exception $e) {
-            $this->error('节点更新失败');
+            $this->error_view('节点更新失败');
         }
-        $this->success('节点更新成功');
+        $this->success_view('节点更新成功');
     }
 }

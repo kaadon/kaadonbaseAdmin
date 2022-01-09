@@ -75,7 +75,7 @@ class Menu extends AdminController
             ])
             ->value('id');
         if ($id == $homeId) {
-            $this->error('首页不能添加子菜单');
+            $this->error_view('首页不能添加子菜单');
         }
         if ($this->request->isPost()) {
             $post = $this->request->post();
@@ -88,13 +88,13 @@ class Menu extends AdminController
             try {
                 $save = $this->model->save($post);
             } catch (\Exception $e) {
-                $this->error('保存失败');
+                $this->error_view('保存失败');
             }
             if ($save) {
                 TriggerService::updateMenu();
-                $this->success('保存成功');
+                $this->success_view('保存成功');
             } else {
-                $this->error('保存失败');
+                $this->error_view('保存失败');
             }
         }
         $pidMenuList = $this->model->getPidMenuList();
@@ -109,7 +109,7 @@ class Menu extends AdminController
     public function edit($id)
     {
         $row = $this->model->find($id);
-        empty($row) && $this->error('数据不存在');
+        empty($row) && $this->error_view('数据不存在');
         if ($this->request->isPost()) {
             $post = $this->request->post();
             $rule = [
@@ -121,13 +121,13 @@ class Menu extends AdminController
             try {
                 $save = $row->save($post);
             } catch (\Exception $e) {
-                $this->error('保存失败');
+                $this->error_view('保存失败');
             }
             if ($save) {
                 TriggerService::updateMenu();
-                $this->success('保存成功');
+                $this->success_view('保存成功');
             } else {
-                $this->error('保存失败');
+                $this->error_view('保存失败');
             }
         }
         $pidMenuList = $this->model->getPidMenuList();
@@ -146,17 +146,17 @@ class Menu extends AdminController
     {
         $this->checkPostRequest();
         $row = $this->model->whereIn('id', $id)->select();
-        empty($row) && $this->error('数据不存在');
+        empty($row) && $this->error_view('数据不存在');
         try {
             $save = $row->delete();
         } catch (\Exception $e) {
-            $this->error('删除失败');
+            $this->error_view('删除失败');
         }
         if ($save) {
             TriggerService::updateMenu();
-            $this->success('删除成功');
+            $this->success_view('删除成功');
         } else {
-            $this->error('删除失败');
+            $this->error_view('删除失败');
         }
     }
 
@@ -175,10 +175,10 @@ class Menu extends AdminController
         $this->validate($post, $rule);
         $row = $this->model->find($post['id']);
         if (!$row) {
-            $this->error('数据不存在');
+            $this->error_view('数据不存在');
         }
         if (!in_array($post['field'], $this->allowModifyFields)) {
-            $this->error('该字段不允许修改：' . $post['field']);
+            $this->error_view('该字段不允许修改：' . $post['field']);
         }
         $homeId = $this->model
             ->where([
@@ -186,17 +186,17 @@ class Menu extends AdminController
             ])
             ->value('id');
         if ($post['id'] == $homeId && $post['field'] == 'status') {
-            $this->error('首页状态不允许关闭');
+            $this->error_view('首页状态不允许关闭');
         }
         try {
             $row->save([
                 $post['field'] => $post['value'],
             ]);
         } catch (\Exception $e) {
-            $this->error($e->getMessage());
+            $this->error_view($e->getMessage());
         }
         TriggerService::updateMenu();
-        $this->success('保存成功');
+        $this->success_view('保存成功');
     }
 
     /**

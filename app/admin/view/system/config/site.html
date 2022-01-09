@@ -3,8 +3,14 @@
     <div class="layui-form-item">
         <label class="layui-form-label">站点名称</label>
         <div class="layui-input-block">
+            <input type="text" name="group" class="layui-input" lay-verify="required" placeholder="请输入站点名称" value="site"
+                   style="display:none">
+
+            <input type="text" name="name" class="layui-input" lay-verify="required" placeholder="请输入站点名称" value="site"
+                   style="display:none">
+
             <input type="text" name="site_name" class="layui-input" lay-verify="required" placeholder="请输入站点名称"
-                   value="{:sysconfig('site','site_name')}">
+                   value="{:get_config('site','site','site_name')}">
             <tip>填写站点名称。</tip>
         </div>
     </div>
@@ -13,7 +19,7 @@
         <label class="layui-form-label">浏览器图标</label>
         <div class="layui-input-block layuimini-upload">
             <input name="site_ico" class="layui-input layui-col-xs6" lay-verify="required" placeholder="请上传浏览器图标,ico类型"
-                   value="{:sysconfig('site','site_ico')}">
+                   value="{:get_config('site','site','site_ico')}">
             <div class="layuimini-upload-btn">
                 <span><a class="layui-btn" data-upload="site_ico" data-upload-number="one" data-upload-exts="ico"><i
                         class="fa fa-upload"></i> 上传</a></span>
@@ -27,7 +33,7 @@
         <label class="layui-form-label">版本信息</label>
         <div class="layui-input-block">
             <input type="text" name="site_version" class="layui-input" lay-verify="required" placeholder="请输入版本信息"
-                   value="{:sysconfig('site','site_version')}">
+                   value="{:get_config('site','site','site_version')}">
             <tip>填写版本信息。</tip>
         </div>
     </div>
@@ -36,7 +42,7 @@
         <label class="layui-form-label">备案信息</label>
         <div class="layui-input-block">
             <input type="text" name="site_beian" class="layui-input" lay-verify="required" placeholder="请输入备案信息"
-                   value="{:sysconfig('site','site_beian')}">
+                   value="{:get_config('site','site','site_beian')}">
             <tip>填写备案信息。</tip>
         </div>
     </div>
@@ -45,7 +51,7 @@
         <label class="layui-form-label">版权信息</label>
         <div class="layui-input-block">
             <input type="text" name="site_copyright" class="layui-input" lay-verify="required" placeholder="请输入版权信息"
-                   value="{:sysconfig('site','site_copyright')}">
+                   value="{:get_config('site','site','site_copyright')}">
             <tip>填写版权信息。</tip>
         </div>
     </div>

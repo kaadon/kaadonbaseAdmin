@@ -15,19 +15,21 @@ trait JumpTrait
     /**
      * 操作成功跳转的快捷方法
      * @access protected
+     *
      * @param mixed $msg 提示信息
      * @param mixed $data 返回的数据
      * @param string $url 跳转的 URL 地址
      * @param int $wait 跳转等待时间
      * @param array $header 发送的 Header 信息
+     *
      * @return void
      * @throws HttpResponseException
      */
-    protected function success($msg = '', $data = '', $url = null, $wait = 3, array $header = [])
+    protected function success_view($msg = '', $data = '', $url = null, $wait = 3, array $header = [])
     {
         if (is_null($url) && isset($_SERVER["HTTP_REFERER"])) {
             $url = $_SERVER["HTTP_REFERER"];
-        } elseif ($url) {
+        } else if ($url) {
             $url = (strpos($url, '://') || 0 === strpos($url, '/')) ? $url : app('route')->buildUrl($url)->__toString();
         }
 
@@ -39,10 +41,10 @@ trait JumpTrait
             'wait' => $wait,
         ];
 
-        $type = $this->getResponseType();
+        $type = $type = $this->getResponseType();
         if ($type == 'html') {
             $response = view(app('config')->get('app.dispatch_success_tmpl'), $result);
-        } elseif ($type == 'json') {
+        } else if ($type == 'json') {
             $response = json($result);
         }
         throw new HttpResponseException($response);
@@ -51,19 +53,21 @@ trait JumpTrait
     /**
      * 操作错误跳转的快捷方法
      * @access protected
+     *
      * @param mixed $msg 提示信息
      * @param mixed $data 返回的数据
      * @param string $url 跳转的 URL 地址
      * @param int $wait 跳转等待时间
      * @param array $header 发送的 Header 信息
+     *
      * @return void
      * @throws HttpResponseException
      */
-    protected function error($msg = '', $data = '', $url = null, $wait = 3, array $header = [])
+    protected function error_view($msg = '', $data = '', $url = null, $wait = 3, array $header = [])
     {
         if (is_null($url)) {
             $url = request()->isAjax() ? '' : 'javascript:history.back(-1);';
-        } elseif ($url) {
+        } else if ($url) {
             $url = (strpos($url, '://') || 0 === strpos($url, '/')) ? $url : app('route')->buildUrl($url)->__toString();
         }
 
@@ -77,7 +81,7 @@ trait JumpTrait
         ];
         if ($type == 'html') {
             $response = view(app('config')->get('app.dispatch_error_tmpl'), $result);
-        } elseif ($type == 'json') {
+        } else if ($type == 'json') {
             $response = json($result);
         }
         throw new HttpResponseException($response);

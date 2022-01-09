@@ -39,12 +39,12 @@ class CheckAdmin
         // 验证登录
         if (!in_array($currentController, $adminConfig['no_login_controller']) &&
             !in_array($currentNode, $adminConfig['no_login_node'])) {
-            empty($adminId) && $this->error('请先登录后台', [], __url(admin_alias_name() . '/login/index'));
+            empty($adminId) && $this->error_view('请先登录后台', [], __url(admin_alias_name() . '/login/index'));
 
             // 判断是否登录过期
             if ($expireTime !== true && time() > $expireTime) {
                 session('admin', null);
-                $this->error('登录已过期，请重新登录', [], __url(admin_alias_name() . '/login/index'));
+                $this->error_view('登录已过期，请重新登录', [], __url(admin_alias_name() . '/login/index'));
             }
         }
 
@@ -52,11 +52,11 @@ class CheckAdmin
         if (!in_array($currentController, $adminConfig['no_auth_controller']) &&
             !in_array($currentNode, $adminConfig['no_auth_node'])) {
             $check = $authService->checkNode($currentNode);
-            !$check && $this->error('无权限访问');
+            !$check && $this->error_view('无权限访问');
 
             // 判断是否为演示环境
             if (env('easyadmin.is_demo', false) && $request->isPost()) {
-                $this->error('演示环境下不允许修改');
+                $this->error_view('演示环境下不允许修改');
             }
 
         }

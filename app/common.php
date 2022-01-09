@@ -35,6 +35,45 @@ if (!function_exists('__url')) {
     }
 }
 
+if (!function_exists('get_config')) {
+
+    /**
+     * 获取系统配置信息
+     * @param string $group
+     * @param string $name
+     * @param string|null $value
+     * @return array|mixed
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
+    function get_config(string $group, string $name, string $value = null)
+    {
+
+        $data = \app\common\model\SystemConfig::getInfo($group, $name);
+
+        if (!is_null($value)) {
+            if (is_array($data) && array_key_exists($value, $data)) {
+                $data = $data[$value];
+            } else {
+                $data = '';
+            }
+        }
+
+        return $data;
+    }
+}
+
+if (!function_exists('timestamp')) {
+    /**
+     * 时间戳
+     * @return false|string
+     */
+    function timestamp()
+    {
+        return date('Y-m-d H:i:s');
+    }
+}
 if (!function_exists('password')) {
 
     /**
@@ -74,31 +113,7 @@ if (!function_exists('xdebug')) {
     }
 }
 
-if (!function_exists('sysconfig')) {
 
-    /**
-     * 获取系统配置信息
-     * @param $group
-     * @param null $name
-     * @return array|mixed
-     */
-    function sysconfig($group, $name = null)
-    {
-        $where = ['group' => $group];
-        $value = empty($name) ? Cache::get("sysconfig_{$group}") : Cache::get("sysconfig_{$group}_{$name}");
-        if (empty($value)) {
-            if (!empty($name)) {
-                $where['name'] = $name;
-                $value         = \app\admin\model\SystemConfig::where($where)->value('value');
-                Cache::tag('sysconfig')->set("sysconfig_{$group}_{$name}", $value, 3600);
-            } else {
-                $value = \app\admin\model\SystemConfig::where($where)->column('value', 'name');
-                Cache::tag('sysconfig')->set("sysconfig_{$group}", $value, 3600);
-            }
-        }
-        return $value;
-    }
-}
 
 if (!function_exists('array_format_key')) {
 

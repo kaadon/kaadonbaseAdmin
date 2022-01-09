@@ -48,10 +48,10 @@ class Auth extends AdminController
     public function authorize($id)
     {
         $row = $this->model->find($id);
-        empty($row) && $this->error('数据不存在');
+        empty($row) && $this->error_view('数据不存在');
         if ($this->request->isAjax()) {
             $list = $this->model->getAuthorizeNodeListByAdminId($id);
-            $this->success('获取成功', $list);
+            $this->success_view('获取成功', $list);
         }
         $this->assign('row', $row);
         return $this->fetch();
@@ -67,7 +67,7 @@ class Auth extends AdminController
         $node = $this->request->post('node', "[]");
         $node = json_decode($node, true);
         $row  = $this->model->find($id);
-        empty($row) && $this->error('数据不存在');
+        empty($row) && $this->error_view('数据不存在');
         try {
             $authNode = new SystemAuthNode();
             $authNode->where('auth_id', $id)->delete();
@@ -83,9 +83,9 @@ class Auth extends AdminController
             }
             TriggerService::updateMenu();
         } catch (\Exception $e) {
-            $this->error('保存失败');
+            $this->error_view('保存失败');
         }
-        $this->success('保存成功');
+        $this->success_view('保存成功');
     }
 
 }
