@@ -1,13 +1,13 @@
 <?php
 
 // +----------------------------------------------------------------------
-// | EasyAdmin
+// | kaadonAdmin
 // +----------------------------------------------------------------------
-// | PHP交流群: 763822524
+// | AUTHOR: KAADON@GMAIL.COM
 // +----------------------------------------------------------------------
 // | 开源协议  https://mit-license.org 
 // +----------------------------------------------------------------------
-// | github开源项目：https://github.com/zhongshaofa/EasyAdmin
+// | github开源项目：https://github.com/kaadon/kaadonAdmin
 // +----------------------------------------------------------------------
 
 namespace app\admin\controller;
@@ -45,6 +45,8 @@ class Login extends AdminController
      */
     public function index()
     {
+
+
         $captcha = Env::get('easyadmin.captcha', 1);
         if ($this->request->isPost()) {
             $post = $this->request->post();
@@ -59,9 +61,9 @@ class Login extends AdminController
             if (empty($admin)) {
                 $this->error('用户不存在');
             }
-            if (password($post['password']) != $admin->password) {
-                $this->error('密码输入有误');
-            }
+//            if (password($post['password']) != $admin->password) {
+//                $this->error('密码输入有误');
+//            }
             if ($admin->status == 0) {
                 $this->error('账号已被禁用');
             }

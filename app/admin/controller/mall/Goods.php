@@ -7,8 +7,8 @@ namespace app\admin\controller\mall;
 use app\admin\model\MallGoods;
 use app\admin\traits\Curd;
 use app\common\controller\AdminController;
-use EasyAdmin\annotation\ControllerAnnotation;
-use EasyAdmin\annotation\NodeAnotation;
+use KaadonAdmin\annotation\ControllerAnnotation;
+use KaadonAdmin\annotation\NodeAnotation;
 use think\App;
 
 /**

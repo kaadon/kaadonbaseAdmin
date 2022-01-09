@@ -1,19 +1,19 @@
 <?php
 
 // +----------------------------------------------------------------------
-// | EasyAdmin
+// | kaadonAdmin
 // +----------------------------------------------------------------------
-// | PHP交流群: 763822524
+// | AUTHOR: KAADON@GMAIL.COM
 // +----------------------------------------------------------------------
 // | 开源协议  https://mit-license.org 
 // +----------------------------------------------------------------------
-// | github开源项目：https://github.com/zhongshaofa/EasyAdmin
+// | github开源项目：https://github.com/kaadon/kaadonAdmin
 // +----------------------------------------------------------------------
 
 namespace app\admin\service;
 
 
-use EasyAdmin\auth\Node;
+use KaadonAdmin\auth\Node;
 
 class NodeService
 {

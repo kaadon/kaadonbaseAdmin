@@ -1,5 +1,5 @@
 {
-    "name": "zhongshaofa/easyadmin",
+    "name": "kaadon/kaadonbaseAdmin",
     "description": "基于ThinkPHP6.0和layui的快速开发的后台管理系统。",
     "type": "project",
     "keywords": [
@@ -11,8 +11,8 @@
     "license": "MIT",
     "authors": [
         {
-            "name": "zhongshaofa",
-            "email": "2286732552@qq.com"
+            "name": "kaadon",
+            "email": "kaadon@gmail.com"
         }
     ],
     "require": {
@@ -27,9 +27,8 @@
         "qiniu/php-sdk": "^7.4",
         "alibabacloud/client": "^1.5",
         "jianyan74/php-excel": "^1.0",
-        "zhongshaofa/easy-admin": "^1.0.2",
-        "ext-json": "*",
-        "zhongshaofa/thinkphp-log-trace": "^1.0"
+        "zhongshaofa/thinkphp-log-trace": "^1.0",
+        "kaadon/kaadon-admin": "^1.0"
     },
     "require-dev": {
         "symfony/var-dumper": "^4.2",

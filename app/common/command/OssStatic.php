@@ -1,21 +1,21 @@
 <?php
 
 // +----------------------------------------------------------------------
-// | EasyAdmin
+// | kaadonAdmin
 // +----------------------------------------------------------------------
-// | PHP交流群: 763822524
+// | AUTHOR: KAADON@GMAIL.COM
 // +----------------------------------------------------------------------
 // | 开源协议  https://mit-license.org 
 // +----------------------------------------------------------------------
-// | github开源项目：https://github.com/zhongshaofa/EasyAdmin
+// | github开源项目：https://github.com/kaadon/kaadonAdmin
 // +----------------------------------------------------------------------
 
 namespace app\common\command;
 
 
-use EasyAdmin\console\CliEcho;
-use EasyAdmin\tool\CommonTool;
-use EasyAdmin\upload\driver\alioss\Oss;
+use KaadonAdmin\console\CliEcho;
+use KaadonAdmin\tool\CommonTool;
+use KaadonAdmin\upload\driver\alioss\Oss;
 use think\console\Command;
 use think\console\Input;
 use think\console\input\Option;

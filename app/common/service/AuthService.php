@@ -1,19 +1,19 @@
 <?php
 
 // +----------------------------------------------------------------------
-// | EasyAdmin
+// | kaadonAdmin
 // +----------------------------------------------------------------------
-// | PHP交流群: 763822524
+// | AUTHOR: KAADON@GMAIL.COM
 // +----------------------------------------------------------------------
 // | 开源协议  https://mit-license.org 
 // +----------------------------------------------------------------------
-// | github开源项目：https://github.com/zhongshaofa/EasyAdmin
+// | github开源项目：https://github.com/kaadon/kaadonAdmin
 // +----------------------------------------------------------------------
 
 namespace app\common\service;
 
 use app\common\constants\AdminConstant;
-use EasyAdmin\tool\CommonTool;
+use KaadonAdmin\tool\CommonTool;
 use think\facade\Db;
 
 /**

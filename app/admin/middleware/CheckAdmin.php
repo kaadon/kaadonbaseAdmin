@@ -1,13 +1,13 @@
 <?php
 
 // +----------------------------------------------------------------------
-// | EasyAdmin
+// | kaadonAdmin
 // +----------------------------------------------------------------------
-// | PHP交流群: 763822524
+// | AUTHOR: KAADON@GMAIL.COM
 // +----------------------------------------------------------------------
 // | 开源协议  https://mit-license.org 
 // +----------------------------------------------------------------------
-// | github开源项目：https://github.com/zhongshaofa/EasyAdmin
+// | github开源项目：https://github.com/kaadon/kaadonAdmin
 // +----------------------------------------------------------------------
 
 namespace app\admin\middleware;
@@ -39,12 +39,12 @@ class CheckAdmin
         // 验证登录
         if (!in_array($currentController, $adminConfig['no_login_controller']) &&
             !in_array($currentNode, $adminConfig['no_login_node'])) {
-            empty($adminId) && $this->error('请先登录后台', [], __url('admin/login/index'));
+            empty($adminId) && $this->error('请先登录后台', [], __url(admin_alias_name() . '/login/index'));
 
             // 判断是否登录过期
             if ($expireTime !== true && time() > $expireTime) {
                 session('admin', null);
-                $this->error('登录已过期，请重新登录', [], __url('admin/login/index'));
+                $this->error('登录已过期，请重新登录', [], __url(admin_alias_name() . '/login/index'));
             }
         }
 

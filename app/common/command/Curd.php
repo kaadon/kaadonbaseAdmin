@@ -1,26 +1,26 @@
 <?php
 
 // +----------------------------------------------------------------------
-// | EasyAdmin
+// | kaadonAdmin
 // +----------------------------------------------------------------------
-// | PHP交流群: 763822524
+// | AUTHOR: KAADON@GMAIL.COM
 // +----------------------------------------------------------------------
 // | 开源协议  https://mit-license.org 
 // +----------------------------------------------------------------------
-// | github开源项目：https://github.com/zhongshaofa/EasyAdmin
+// | github开源项目：https://github.com/kaadon/kaadonAdmin
 // +----------------------------------------------------------------------
 
 namespace app\common\command;
 
 
 use app\admin\model\SystemNode;
-use EasyAdmin\console\CliEcho;
-use EasyAdmin\curd\BuildCurd;
+use KaadonAdmin\console\CliEcho;
+use KaadonAdmin\curd\BuildCurd;
 use think\console\Command;
 use think\console\Input;
 use think\console\input\Option;
 use think\console\Output;
-use EasyAdmin\auth\Node as NodeService;
+use KaadonAdmin\auth\Node as NodeService;
 use think\Exception;
 
 class Curd extends Command

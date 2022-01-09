@@ -1,13 +1,13 @@
 <?php
 
 // +----------------------------------------------------------------------
-// | EasyAdmin
+// | kaadonAdmin
 // +----------------------------------------------------------------------
-// | PHP交流群: 763822524
+// | AUTHOR: KAADON@GMAIL.COM
 // +----------------------------------------------------------------------
 // | 开源协议  https://mit-license.org 
 // +----------------------------------------------------------------------
-// | github开源项目：https://github.com/zhongshaofa/EasyAdmin
+// | github开源项目：https://github.com/kaadon/kaadonAdmin
 // +----------------------------------------------------------------------
 
 namespace app\admin\controller\system;
@@ -17,8 +17,8 @@ use app\admin\model\SystemAuth;
 use app\admin\model\SystemAuthNode;
 use app\admin\service\TriggerService;
 use app\common\controller\AdminController;
-use EasyAdmin\annotation\ControllerAnnotation;
-use EasyAdmin\annotation\NodeAnotation;
+use KaadonAdmin\annotation\ControllerAnnotation;
+use KaadonAdmin\annotation\NodeAnotation;
 use think\App;
 
 /**

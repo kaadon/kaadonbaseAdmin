@@ -5,8 +5,8 @@ namespace app\admin\controller\system;
 
 use app\admin\model\SystemLog;
 use app\common\controller\AdminController;
-use EasyAdmin\annotation\ControllerAnnotation;
-use EasyAdmin\annotation\NodeAnotation;
+use KaadonAdmin\annotation\ControllerAnnotation;
+use KaadonAdmin\annotation\NodeAnotation;
 use think\App;
 
 /**

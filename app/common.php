@@ -4,6 +4,21 @@
 use app\common\service\AuthService;
 use think\facade\Cache;
 
+
+if (!function_exists('admin_alias_name')) {
+
+
+    /**
+     * 构建admin别名
+     * @return mixed|string
+     */
+    function admin_alias_name()
+    {
+        return config('app.admin_alias_name') ?: 'admin';
+    }
+}
+
+
 if (!function_exists('__url')) {
 
     /**
