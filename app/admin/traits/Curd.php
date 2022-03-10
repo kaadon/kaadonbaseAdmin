@@ -118,10 +118,14 @@ trait Curd
     public function export()
     {
         list($page, $limit, $where) = $this->buildTableParames();
-        $tableName = $this->model->getName();
-        $tableName = CommonTool::humpToLine(lcfirst($tableName));
-        $prefix    = config('database.connections.mysql.prefix');
-        $dbList    = Db::query("show full columns from {$prefix}{$tableName}");
+        $tableName = $this->model->getNName();
+        if (!$tableName){
+            $tableName = $this->model->getName();
+            $tableName = CommonTool::humpToLine(lcfirst($tableName));
+            $prefix    = config('database.connections.mysql.prefix');
+            $tableName = $prefix . $tableName;
+        }
+        $dbList = Db::query("show full columns from {$tableName}");
         $header    = [];
         foreach ($dbList as $vo) {
             $comment = !empty($vo['Comment']) ? $vo['Comment'] : $vo['Field'];
