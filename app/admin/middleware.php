@@ -9,7 +9,7 @@ return [
     \app\admin\middleware\SystemLog::class,
 
     // Csrf安全校验
-    \app\admin\middleware\CsrfMiddleware::class,
+//    \app\admin\middleware\CsrfMiddleware::class,
 
     // 后台视图初始化
 //    \app\admin\middleware\ViewInit::class,
