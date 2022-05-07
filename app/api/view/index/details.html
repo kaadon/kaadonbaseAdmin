@@ -1,11 +1,16 @@
 <html>
 <h2>薪资查询系统</h2>
-<h5>（薪资详情）</h5>
+<h4>（薪资详情）</h4>
 <div>
     <ul>
         <li>底薪：{$data['mixSalary']}</li>
         <li>出勤：{$data['days']}</li>
         <li>迟到次数：{$data['late']}</li>
+        <li>迟到时间：
+            <?php foreach($data['timeData'] as $v){ ?>
+                <ul>{$v['time']}</ul>
+            <?php } ?>
+        </li>
         <li>项目提成：{$data['num']}</li>
         <li>总计：{$data['allSalary']}</li>
     </ul>

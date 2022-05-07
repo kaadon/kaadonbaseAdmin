@@ -2,8 +2,6 @@
 
 namespace app\api\controller;
 
-
-
 use app\BaseController;
 use app\common\model\ProductProject;
 use app\common\model\UserClient;
@@ -11,10 +9,17 @@ use app\common\model\UserProject;
 use app\admin\service\TriggerService;
 use app\Request;
 use think\facade\Db;
+use think\facade\View;
 
 class Product extends Base
 {
-
+    //列表显示
+    public function index(){
+        //需要一个修改项目进度的按钮 一个修改结算状态的按钮
+        $data = ProductProject::Infos();
+        View::assign('data',$data);
+        return View::fetch();
+    }
     /**
      * 项目提交
      * @param Request $request
@@ -50,7 +55,6 @@ class Product extends Base
                 'Reviewer'=>$param['Reviewer'],
                 'remainder'=>$param['money']-$param['pay'],
                 'consumption'=>$param['consumption'],
-                'overtime_pay'=>$param['overtime_pay'],
                 'begin_time'=>time(),
                 'end_time'=>strtotime('10 day'),
                 'create_at'=>time(),
@@ -132,6 +136,23 @@ class Product extends Base
                 Db::startTrans();
                 try {
                     (new UserProject())->where(['p_id'=>$p_id])->update(['is_over'=>1]);
+                    Db::commit();
+                }catch (\Exception $exception){
+                    Db::rollback();
+                    return $exception->getMessage();
+                }
+                return success('更新成功');
+            }
+        }
+    }
+    //是否参与结算
+    public function settlement($id){
+        if (!empty($id)){
+            $data = (new UserProject())->where(['p_id'=>$id])->select();
+            if ($data){
+                Db::startTrans();
+                try {
+                    (new UserProject())->where(['p_id'=>$id])->update(['is_settlement'=>1]);
                     Db::commit();
                 }catch (\Exception $exception){
                     Db::rollback();

@@ -48,7 +48,7 @@ class JwtVerifyMiddleware
 //                    throw new Exception('你无权限查看!');
 //                }
 //                $request->username = $data->id;
-                $request->username = 21;
+                $request->username = 22;
         } catch (\Exception $e) {
                 return error($e->getMessage());
             }

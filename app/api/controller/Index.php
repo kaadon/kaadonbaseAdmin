@@ -7,6 +7,7 @@ use app\common\model\UserStaff;
 use app\common\model\UserPosition;
 use app\common\model\UserProject;
 use app\common\model\ProductProject;
+use app\common\model\UserLateTime;
 use think\facade\Db;
 use think\facade\View;
 use think\App;
@@ -16,9 +17,10 @@ use think\facade\Lang;
 
 class Index extends Base
 {
-     public function index()
+ public function index()
     {
-        if ($this->username == 21){
+        //21的是员工管理员账号
+        if ($this->username == 22){
             $data = $this->adminSalary();
             View::assign('data' , $data);
             return View::fetch();
@@ -29,46 +31,51 @@ class Index extends Base
     }
     //薪资详情
     public function details($sta_id){
+        $month = date('m');
         $staData = (new UserStaff())->info(['id'=>$sta_id]);
         $mixSalary = (new UserPosition())->info(['id'=>$staData['p_id']])['salary'];//底薪
-        $month = date('m');
         $Attendance = (new UserAttendance())->Info(['sta_id'=>$sta_id,'month'=>$month]);
+        $data = (new UserProject)->Infos(['s_id'=>$sta_id,'is_over'=> 1,'is_settlement'=>0]);//员工对应的所有完工的项目,参与结算的
+        $timeData = (new UserLateTime())->where(['sta_id'=>$sta_id])->select();
         $days = 0;//出勤天数
         $late = 0;//迟到次数
+        $num = 0;//项目提成
         if ($Attendance){
             $days = $Attendance['days'];//出勤天数
             $late = $Attendance['late'];//迟到次数
         }
-        $data = (new UserProject)->Infos(['s_id'=>$sta_id,'is_over'=> 1]);//员工对应的所有完工的项目
-        $num = 0;//项目提成
         $allSalary = $mixSalary;
         if ($data){
             foreach ($data as $v){
-                $rpoData = ProductProject::Infos(['id'=>$v['p_id']]);//员工对应完工具体项目
+                $rpoData = ProductProject::Infos(['id'=>$v['p_id']]);//员工对应的具体项目
                 foreach ($rpoData as $val){
                     $money = $val['money'];
                 }
                 $num += $money / 100;//项目提成1%
             }
-            $allSalary = $mixSalary + $num;
+            $allSalary = $allSalary + $num;
         }
+        //有全勤
         if ($days >= 25){
-            $allSalary = $mixSalary + $num + 500.00;
+            $allSalary = $allSalary + 500.00;
         }
+        //有迟到
         if($late){
-            $allSalary = $mixSalary + $num + 500.00 - $late * 10;//迟到一次扣10
+            $allSalary = $allSalary - $late * 10;//迟到一次扣10
         }
         $allSalary = sprintf("%.2f",$allSalary);
         $detail = [
             'mixSalary' => $mixSalary,
             'days' => $days,
             'late' => $late,
+            'timeData' => $timeData,
             'num' => $num,
             'allSalary' => $allSalary
         ];
         View::assign('data',$detail);
         return View::fetch('details');
     }
+
     //签到打卡
     public function signIn(){
         $month = date('m');
@@ -90,7 +97,7 @@ class Index extends Base
                 return error(lang::Get('signInError'));
             }
             return success(lang::Get('signInSuccess')) ;
-        }else if($status > "09:30:59" and $status < "10:00:00"){
+        }else if($status > "09:30:59" and $status < "10:00:59"){
             if ((new UserAttendance())->Info(['sta_id'=>$this->username,'ymd'=>$ymd,'month'=>$month])){
                 return '今日已签到';
             }
@@ -117,18 +124,20 @@ class Index extends Base
          if ($status){
              $Attendance =(new UserAttendance())->Info(['sta_id'=>$user_id,'month'=>$month]);//出勤表数据
              $staData = (new UserStaff())->info(['id'=>$user_id]);//员工数据
-             $data = (new UserProject)->Infos(['s_id'=>$user_id,'is_over'=> 1]);//员工对应的所有完工的项目
-             if (!$data){
-                 $data = [];
-             }
+             $data = (new UserProject)->Infos(['s_id'=>$user_id,'is_over'=> 1,'is_settlement'=>0]);//员工对应的所有完工的未结算的项目
          }else{
              $Attendance =(new UserAttendance())->Info(['sta_id'=>$this->username,'month'=>$month]);//出勤表数据
              $staData = (new UserStaff())->info(['id'=>$this->username]);//员工数据
-             $data = (new UserProject)->Infos(['s_id'=>$this->username,'is_over'=> 1]);//员工对应的所有完工的项目
+             $data = (new UserProject)->Infos(['s_id'=>$this->username,'is_over'=> 1,'is_settlement'=>0]);//员工对应的所有完工的未结算的项目
          }
+        if (!$data){
+            $data = [];
+        }
              $mixSalary = (new UserPosition())->info(['id'=>$staData['p_id']])['salary'];//底薪
+             $Salary = $mixSalary;//底薪工资
              $num = 0;
              if ($data){
+                 //有提成
                  foreach ($data as $v){
                      $rpoData = ProductProject::Infos(['id'=>$v['p_id']]);//员工对应完工具体项目
                      foreach ($rpoData as $val){
@@ -136,22 +145,21 @@ class Index extends Base
                      }
                      $num += $money / 100;//项目提成
                  }
+                 $Salary = $Salary + $num;//底薪加提成
                  if ($Attendance && $Attendance['days'] >= 25){
-                     if (!$Attendance['late']){
-                         $Salary = $num + $mixSalary + 500.00;//全勤未迟到工资
-                     }
-                     $Salary = $num + $mixSalary + 500.00 - ($Attendance['late'] * 10);//全勤迟到工资
-                 }else{
-                     $Salary = $num + $mixSalary;//未全勤工资
+                     $Salary = $Salary + 500.00;//有全勤加500
+                 }
+                 if ($Attendance && $Attendance['late']){
+                     $Salary = $Salary - ($Attendance['late'] * 10);//有迟到减
                  }
              }else{
+                 //没提成
                  if ($Attendance && $Attendance['days'] >= 25){
-                     if (!$Attendance['late']){
-                         $Salary = $mixSalary + 500.00;//全勤未迟到工资
-                     }
-                     $Salary = $mixSalary + 500.00 - ($Attendance['late'] * 10);//全勤迟到工资
+                     $Salary = $Salary + 500.00;//有全勤
                  }
-                 $Salary = $mixSalary;//底薪工资
+                 if ($Attendance && $Attendance['late']){
+                     $Salary = $Salary - ($Attendance['late'] * 10);//有迟到
+                 }
              }
             $Salary = sprintf("%.2f",$Salary);
              $data = [

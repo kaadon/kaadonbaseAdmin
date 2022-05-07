@@ -6,8 +6,11 @@
         <ul>
             <li>姓名：{$v['name']}</li>
             <li>薪资：{$v['Salary']}</li>
-            <a href="index/details?id={$v['sta_id']}">薪资详情</a>
+            <a href="url('index/details',['id'=>{$v['sta_id']}])">薪资详情</a>
         </ul>
    <?php } ?>
+    <div>
+        <a href="">项目管理</a>
+    </div>
 </div>
 </html>

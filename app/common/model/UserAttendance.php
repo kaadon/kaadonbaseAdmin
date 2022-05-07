@@ -13,6 +13,7 @@
 namespace app\common\model;
 
 use think\Model;
+use function Composer\Autoload\includeFile;
 
 class UserAttendance extends TimeModel
 {
@@ -20,18 +21,24 @@ class UserAttendance extends TimeModel
 
     //打卡签到
     public function setAdd($id,$month,$ymd,$late = 0,$late_time = 0){
-        $data = (new UserAttendance)->where(['sta_id'=>$id,'month'=>$month])->find();
+        $data = (new UserAttendance)->where(['sta_id'=>$id,'month'=>$month])->find();//当月打卡记录
         if(!empty($data)){
+            $num = $data['days'];
             if($late){
                 $late1 = $data['late'];
-                $late_id = (new UserLateTime)->insertGetId(['time'=>$late_time]);
-                (new UserAttendance)->where(['sta_id'=>$id,'month'=>$month])->update(['late'=>$late1+1,'late_id'=>$late_id]);
+                (new UserLateTime)->create(['time'=>$late_time,'sta_id'=>$id]);
+                (new UserAttendance)->where(['sta_id'=>$id,'month'=>$month])->update(['days'=>$num+1,'ymd'=>$ymd,'late'=>$late1+1]);
+            }else{
+                (new UserAttendance)->where(['sta_id'=>$id,'month'=>$month])->update(['days'=>$num+1,'ymd'=>$ymd]);
             }
-            $num = $data['days'];
-            (new UserAttendance)->where(['sta_id'=>$id,'month'=>$month])->update(['days'=>$num+1,'ymd'=>$ymd]);
+        }else{
+            if($late){
+                (new UserLateTime)->create(['time'=>$late_time,'sta_id'=>$id]);
+                (new UserAttendance)->create(['sta_id'=>$id,'month'=>$month,'days'=>1,'ymd'=>$ymd,'late'=>1]);
+            }else{
+                (new UserAttendance)->create(['sta_id'=>$id,'month'=>$month,'days'=>1,'ymd'=>$ymd]);
+            }
         }
-            (new UserAttendance)->create(['sta_id'=>$id,'month'=>$month,'days'=>1,'ymd'=>$ymd]);
-
     }
     //查询
     public function Info($where){
