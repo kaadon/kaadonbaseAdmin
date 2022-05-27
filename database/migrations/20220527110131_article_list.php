@@ -3,7 +3,7 @@
 use think\migration\Migrator;
 use think\migration\db\Column;
 
-class ArticleCate extends Migrator
+class ArticleList extends Migrator
 {
     /**
      * Change Method.
@@ -28,12 +28,19 @@ class ArticleCate extends Migrator
      */
     public function change()
     {
-        $table = $this->table('article_cate', array('engine' => 'InnoDB'));
-        $table->addColumn('title', 'string', array( 'limit' => 25, 'default' => '', 'comment' => '标题'))
+
+
+        $table = $this->table('article_list', array('engine' => 'InnoDB'));
+        $table->addColumn('title', 'string', array('limit' => 25, 'default' => '', 'comment' => '标题'))
             ->addColumn('image', 'string', array('default' => '', 'comment' => '封面'))
             ->addColumn('sort', 'integer', array('limit' => 4, 'default' => 0, 'comment' => '排序'))
+            ->addColumn('top', 'boolean', array('limit' => 4, 'default' => 0, 'comment' => '置顶'))
+            ->addColumn('type', 'integer', array('limit' => 4, 'default' => 0, 'comment' => '类型'))
+            ->addColumn('lang', 'integer', array('limit' => 4, 'default' => 0, 'comment' => '语言'))
             ->addColumn('status', 'boolean', array('limit' => 1, 'default' => 0, 'comment' => '状态'))
-            ->addColumn('remark', 'string', array('limit' => 0, 'default' => '', 'comment' => '备注'))
+            ->addColumn('content', 'text', array('limit' => 0, 'default' => '', 'comment' => '正文'))
+            ->addColumn('introduction', 'text', array('limit' => 0, 'default' => '', 'comment' => '简介'))
+            ->addColumn('author', 'string', array('limit' => 0, 'default' => '', 'comment' => '作者'))
             ->addColumn('create_time', 'datetime', array('limit' => 1, 'default' => 0, 'comment' => '创建时间'))
             ->addColumn('update_time', 'datetime', array('limit' => 1, 'default' => 0, 'comment' => '更新时间'))
             ->addColumn('delete_time', 'datetime', array('limit' => 1, 'default' => 0, 'comment' => '删除时间'))
