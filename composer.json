@@ -28,7 +28,8 @@
         "alibabacloud/client": "^1.5",
         "jianyan74/php-excel": "^1.0",
         "zhongshaofa/thinkphp-log-trace": "^1.0",
-        "kaadon/kaadon-admin": "^1.0"
+        "kaadon/kaadon-admin": "^1.0",
+        "topthink/think-migration": "^3.0"
     },
     "require-dev": {
         "symfony/var-dumper": "^4.2",
