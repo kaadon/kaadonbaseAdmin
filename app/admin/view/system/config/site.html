@@ -30,6 +30,20 @@
     </div>
 
     <div class="layui-form-item">
+        <label class="layui-form-label">logo</label>
+        <div class="layui-input-block layuimini-upload">
+            <input name="site_logo" class="layui-input layui-col-xs6" lay-verify="required" placeholder="网站logo"
+                   value="{:get_config('site','site','site_logo')}">
+            <div class="layuimini-upload-btn">
+                <span><a class="layui-btn" data-upload="site_logo" data-upload-number="one" data-upload-exts="jpg|png"><i
+                        class="fa fa-upload"></i> 上传</a></span>
+                <span><a class="layui-btn layui-btn-normal" id="select_site_logo" data-upload-select="site_logo"
+                         data-upload-number="one"><i class="fa fa-list"></i> 选择</a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
         <label class="layui-form-label">版本信息</label>
         <div class="layui-input-block">
             <input type="text" name="site_version" class="layui-input" lay-verify="required" placeholder="请输入版本信息"

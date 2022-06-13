@@ -21,6 +21,7 @@ define(["jquery", "tableSelect", "ckeditor", "compressor", "AppInfoParser"], fun
         upload_exts: 'doc|gif|ico|icon|jpg|mp3|mp4|p12|pem|png|rar',
     };
 
+
     var admin = {
         config: {
             shade: [0.02, '#000'],
@@ -129,6 +130,37 @@ define(["jquery", "tableSelect", "ckeditor", "compressor", "AppInfoParser"], fun
                 node = array.join("/");
                 return node;
             },
+            handleCutZero: function (num) {
+                //拷贝一份 返回去掉零的新串
+                let newstr = num;
+                //循环变量 小数部分长度
+                console.log(num.indexOf('.') - 1);
+                let leng = num.length - num.indexOf('.') - 1;
+                //判断是否有效数
+                if (num.indexOf('.') > -1) {
+                    //循环小数部分
+                    for (let i = leng; i > 0; i--) {
+                        //如果newstr末尾有0
+                        if (
+                            newstr.lastIndexOf('0') > -1 &&
+                            newstr.substr(newstr.length - 1, 1) == 0
+                        ) {
+                            let k = newstr.lastIndexOf('0');
+                            //如果小数点后只有一个0 去掉小数点
+                            if (newstr.charAt(k - 1) == '.') {
+                                return newstr.substring(0, k - 1);
+                            } else {
+                                //否则 去掉一个0
+                                newstr = newstr.substring(0, k);
+                            }
+                        } else {
+                            //如果末尾没有0
+                            return newstr;
+                        }
+                    }
+                }
+                return num;
+            },
             lineToHump: function (name) {
                 return name.replace(/\_(\w)/g, function (all, letter) {
                     return letter.toUpperCase();
@@ -137,6 +169,27 @@ define(["jquery", "tableSelect", "ckeditor", "compressor", "AppInfoParser"], fun
             humpToLine: function (name) {
                 return name.replace(/([A-Z])/g, "_$1").toLowerCase();
             },
+            GetRequest() {
+                var url = location.search; //获取url中"?"符后的字串
+                var theRequest = new Object();
+                if (url.indexOf("?") != -1) {
+                    var str = url.substr(1);
+                    strs = str.split("&");
+                    for (var i = 0; i < strs.length; i++) {
+                        theRequest[strs[i].split("=")[0]] = decodeURI(strs[i].split("=")[1]);
+                    }
+                }
+                let params = [];
+                Object.entries(theRequest).forEach(([key, value]) => {
+                    let param = key + '=' + value;
+                    params.push(param);
+                });
+                if (params.length > 0) {
+                    return '?' + params.join('&');
+                } else {
+                    return ''
+                }
+            }
         },
         msg: {
             // 成功消息
@@ -209,6 +262,8 @@ define(["jquery", "tableSelect", "ckeditor", "compressor", "AppInfoParser"], fun
             close: function (index) {
                 return layer.close(index);
             }
+
+
         },
         table: {
             render: function (options) {
@@ -222,7 +277,7 @@ define(["jquery", "tableSelect", "ckeditor", "compressor", "AppInfoParser"], fun
                 options.page = admin.parame(options.page, true);
                 options.search = admin.parame(options.search, true);
                 options.skin = options.skin || 'line';
-                options.limit = options.limit || 15;
+                options.limit = options.limit || 20;
                 options.limits = options.limits || [10, 15, 20, 25, 50, 100];
                 options.cols = options.cols || [];
                 options.defaultToolbar = (options.defaultToolbar === undefined && !options.search) ? ['filter', 'print', 'exports'] : ['filter', 'print', 'exports', {
@@ -709,6 +764,17 @@ define(["jquery", "tableSelect", "ckeditor", "compressor", "AppInfoParser"], fun
                 }
                 return '<span>￥' + value + '</span>';
             },
+            money: function (data, option) {
+                var field = option.field;
+                option.symbol = option.symbol || '$';
+                try {
+                    var value = eval("data." + field);
+                } catch (e) {
+                    var value = undefined;
+                }
+
+                return '<div style="text-align: left"><em>' + option.symbol +':</em><span style="color: #0000FF;margin-left: 15px;font-size:14px">' + admin.common.handleCutZero(value) + '</span><div></div>';
+            },
             percent: function (data, option) {
                 var field = option.field;
                 try {
@@ -868,6 +934,10 @@ define(["jquery", "tableSelect", "ckeditor", "compressor", "AppInfoParser"], fun
                     });
                 }
             },
+            win: function (data) {
+                return '<span>' + data.a_win + ' : ' + data.b_win + '</span>';
+            },
+
         },
         checkMobile: function () {
             var userAgentInfo = navigator.userAgent;
@@ -1489,7 +1559,7 @@ define(["jquery", "tableSelect", "ckeditor", "compressor", "AppInfoParser"], fun
                                     {type: selectCheck},
                                     {field: 'id', title: 'ID'},
                                     {
-                                        field: 'path',
+                                        field: 'url',
                                         minWidth: 80,
                                         search: false,
                                         title: '图片信息',
@@ -1505,7 +1575,8 @@ define(["jquery", "tableSelect", "ckeditor", "compressor", "AppInfoParser"], fun
                             done: function (e, data) {
                                 var urlArray = [];
                                 $.each(data.data, function (index, val) {
-                                    urlArray.push(val.url + val.path)
+                                    if (!val.path) val.path = ''
+                                    urlArray.push(val.url)
                                 });
                                 var url = urlArray.join(uploadSign);
                                 admin.msg.success('选择成功', function () {

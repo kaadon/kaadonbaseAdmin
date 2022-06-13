@@ -38,8 +38,8 @@ class Ajax extends AdminController
         $menuService = new MenuService(session('admin.id'));
         $data        = [
             'logoInfo' => [
-                'title' => get_config('site', 'site', 'logo_title'),
-                'image' => get_config('site', 'site', 'logo_image'),
+                'title' => get_config('site','site','site_name'),
+                'image' => get_config('site','site','site_logo'),
                 'href'  => __url('index/index'),
             ],
             'homeInfo' => $menuService->getHomeInfo(),
@@ -65,13 +65,11 @@ class Ajax extends AdminController
     {
         $this->checkPostRequest();
         $data         = [
-//            'upload_type' => $this->request->post('upload_type'),
             'file' => $this->request->file('file'),
         ];
         $uploadConfig = get_config('upload', 'default');
         empty($data['upload_type']) && $data['upload_type'] = $uploadConfig['upload_type'];
         $rule = [
-//            'upload_type|指定上传类型有误' => "in:{$uploadConfig['upload_allow_type']}",
             'file|文件'              => "require|file|fileExt:{$uploadConfig['upload_allow_ext']}|fileSize:{$uploadConfig['upload_allow_size']}",
         ];
         $this->validate($data, $rule);
@@ -80,6 +78,7 @@ class Ajax extends AdminController
                 ->setUploadType($data['upload_type'])
                 ->setUploadConfig($uploadConfig)
                 ->setFile($data['file'])
+                ->isSave(true)
                 ->save();
         } catch (\Exception $e) {
             $this->error_view($e->getMessage());
@@ -98,14 +97,13 @@ class Ajax extends AdminController
     public function uploadEditor()
     {
         $this->checkPostRequest();
+
         $data         = [
-//            'upload_type' => $this->request->post('upload_type'),
             'file' => $this->request->file('upload'),
         ];
-        $uploadConfig = get_config('upload', 'default');
+        $uploadConfig = get_config('upload', 'default');   
         empty($data['upload_type']) && $data['upload_type'] = $uploadConfig['upload_type'];
         $rule = [
-//            'upload_type|指定上传类型有误' => "in:{$uploadConfig['upload_allow_type']}",
             'file|文件'              => "require|file|fileExt:{$uploadConfig['upload_allow_ext']}|fileSize:{$uploadConfig['upload_allow_size']}",
         ];
         $this->validate($data, $rule);
@@ -114,6 +112,7 @@ class Ajax extends AdminController
                 ->setUploadType($data['upload_type'])
                 ->setUploadConfig($uploadConfig)
                 ->setFile($data['file'])
+                ->isSave(true)
                 ->save();
         } catch (\Exception $e) {
             $this->error_view($e->getMessage());
