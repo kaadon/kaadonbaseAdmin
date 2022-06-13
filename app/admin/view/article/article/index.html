@@ -10,6 +10,6 @@
     </div>
 </div>
 <script>
-    var Lang_identification = JSON.parse('{$Lang_identification|raw}')
+    var Lang_identification = JSON.parse(`{:json_encode(config('lang.allow_lang_identification'),true)}`)
     console.log(Lang_identification)
 </script>

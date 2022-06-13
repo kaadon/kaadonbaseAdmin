@@ -11,9 +11,10 @@
             <label class="layui-form-label required">上级菜单</label>
             <div class="layui-input-block">
                 <select name="lang">
-                    {volist name="Lang" id="vo"  }
-                    <option value="{$key}" {if $key==$row.lang}selected=""{/if}>{$vo}</option>
+                    {volist name=":config('lang.allow_lang_list')" id="vo"  }
+                    <option value="{$vo}" {if $vo==$row.lang}selected=""{/if}>{:config('lang.allow_lang_identification')[$vo]}</option>
                     {/volist}
+
 
                 </select>
             </div>

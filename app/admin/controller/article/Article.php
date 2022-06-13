@@ -29,7 +29,6 @@ class Article extends AdminController
         parent::__construct($app);
         $this->model = new ArticleList();
         $this->assign('ArticleType',ArticleCate::where(1)->select());
-        $this->assign('Lang_identification',ArticleCate::where(1)->select());
     }
     /**
      * @NodeAnotation(title="列表")

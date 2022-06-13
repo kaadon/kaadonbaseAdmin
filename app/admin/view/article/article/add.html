@@ -19,13 +19,12 @@
             </div>
         </div>
         <div class="layui-form-item  layui-row layui-col-xs12">
-            <label class="layui-form-label required">上级菜单</label>
+            <label class="layui-form-label required">语言</label>
             <div class="layui-input-block">
                 <select name="lang">
-                    {volist name="Lang" id="vo"  }
-                    <option value="{$i}" >{$vo}</option>
+                    {volist name=":config('lang.allow_lang_list')" id="vo"  }
+                    <option value="{$vo}" >{:config('lang.allow_lang_identification')[$vo]}</option>
                     {/volist}
-
                 </select>
             </div>
         </div>
