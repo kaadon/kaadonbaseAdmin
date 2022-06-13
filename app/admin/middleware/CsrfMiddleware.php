@@ -33,7 +33,7 @@ class CsrfMiddleware
                 $refererInfo = parse_url($refererUrl);
                 $host        = $request->host(true);
                 if (!isset($refererInfo['host']) || $refererInfo['host'] != $host) {
-                    $this->error('当前请求不合法！');
+                    $this->error_view('当前请求不合法！');
                 }
 
                 // CSRF校验
@@ -43,7 +43,7 @@ class CsrfMiddleware
 
                 $check = $request->checkToken('__token__', $data);
                 if (!$check) {
-                    $this->error('请求验证失败，请重新刷新页面！');
+                    $this->error_view('请求验证失败，请重新刷新页面！');
                 }
 
             }

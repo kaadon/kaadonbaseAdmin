@@ -31,15 +31,16 @@ return [
     // 禁止URL访问的应用列表（自动多应用模式有效）
     'deny_app_list'         => ['common'],
     // 异常页面的模板文件
-    'exception_tmpl'        => Env::get('app_debug') == 1 ? app()->getThinkPath() . 'tpl/think_exception.tpl' : app()->getBasePath() . 'common' . DIRECTORY_SEPARATOR . 'tpl' . DIRECTORY_SEPARATOR . 'think_exception.tpl',
+//    'exception_tmpl'        => Env::get('app_debug') == 1 ? app()->getThinkPath() . 'tpl/think_exception.tpl' : app()->getBasePath() . 'common' . DIRECTORY_SEPARATOR . 'tpl' . DIRECTORY_SEPARATOR . 'think_exception.tpl',
     // 跳转页面的成功模板文件
     'dispatch_success_tmpl' => app()->getBasePath() . 'common' . DIRECTORY_SEPARATOR . 'tpl' . DIRECTORY_SEPARATOR . 'dispatch_jump.tpl',
     // 跳转页面的失败模板文件
     'dispatch_error_tmpl'   => app()->getBasePath() . 'common' . DIRECTORY_SEPARATOR . 'tpl' . DIRECTORY_SEPARATOR . 'dispatch_jump.tpl',
     // 错误显示信息,非调试模式有效
-    'error_message'         => '页面错误！请稍后再试～',
+//    'error_message'         => '页面错误！请稍后再试～',
     // 显示错误信息
-    'show_error_msg'        => false,
+    'show_error_msg'        => true,
+    'app_debug'        => true,
     // 静态资源上传到OSS前缀
     'oss_static_prefix'     => Env::get('easyadmin.oss_static_prefix', 'static_easyadmin'),
 ];

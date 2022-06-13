@@ -1,0 +1,22 @@
+<html>
+<h2>项目列表</h2>
+<div>
+    <?php foreach($data as $v){ ?>
+        <ul>
+            <li>客户ID：{$v['cid']}</li>
+            <li>项目名称：{$v['title']}</li>
+            <li>提交人：{$v['uid']}</li>
+            <li>审核人：{$v['Reviewer']}</li>
+            <li>项目费用：{$v['money']}</li>
+            <li>项目已付款：{$v['pay']}</li>
+            <li>项目剩余款项：{$v['remainder']}</li>
+            <li>项目支出：{$v['consumption']}</li>
+            <li>项目开始时间：{$v['begin_time']}</li>
+            <li>项目结束时间 ：{$v['end_time']}</li>
+            <li>创建时间：{$v['create_at']}</li>
+            <li>修改时间：{$v['update_at']}</li>
+            <li>删除时间 ：{$v['delete_at']}</li>
+        </ul>
+    <?php } ?>
+</div>
+</html>

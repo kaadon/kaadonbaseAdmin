@@ -152,3 +152,55 @@ if (!function_exists('auth')) {
     }
 
 }
+/**
+ * 错误返回
+ *
+ * @param string $msg 错误提示
+ * @param array $err 错误数据
+ * @param integer $code 错误码
+ *
+ * @return json
+ */
+if (!function_exists('error')) {
+    function error($msg = '操作失败', $errcode = 201, $code = 200, $err = [])
+    {
+        $res['message'] = $msg;
+        return $msg;
+    }
+}
+
+/**
+ * 错误返回
+ *
+ * @param string $msg 错误提示
+ * @param array $err 错误数据
+ * @param integer $code 错误码
+ *
+ * @return json
+ */
+if (!function_exists('fail')) {
+    function fail($message = null, $code = 0, $statusCode = 404, Throwable $previous = null, array $headers = [])
+    {
+        throw new \app\common\exception\HttpAnomaly($message, $code, $statusCode, $previous, $headers = []);
+    }
+}
+
+/**
+ * 成功返回
+ *
+ * @param array $data 成功数据
+ * @param string $msg 成功提示
+ * @param integer $code 成功码
+ *
+ * @return json
+ */
+
+if (!function_exists('success')) {
+    function success($msg = "",$data = [], $code = 200)
+    {
+        $res['message'] = $msg;
+        $res['data'] = $data;
+        $res['code'] = $code;
+        return json_encode($res);
+    }
+}

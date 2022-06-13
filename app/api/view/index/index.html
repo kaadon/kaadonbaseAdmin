@@ -1,0 +1,16 @@
+<html>
+<h2>薪资查询系统</h2>
+<h5>（管理员查询全体员工薪资）</h5>
+<div>
+    <?php foreach($data as $v){ ?>
+        <ul>
+            <li>姓名：{$v['name']}</li>
+            <li>薪资：{$v['Salary']}</li>
+            <a href="url('index/details',['id'=>{$v['sta_id']}])">薪资详情</a>
+        </ul>
+   <?php } ?>
+    <div>
+        <a href="">项目管理</a>
+    </div>
+</div>
+</html>
