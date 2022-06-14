@@ -12,7 +12,7 @@ use function input;
 use function json;
 
 /**
- * Class Customers
+ * Class MemberRecord
  * @package app\admin\controller\member
  * @ControllerAnnotation(title="流水")
  */

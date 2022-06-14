@@ -37,7 +37,7 @@ define(["jquery", "easy-admin"], function ($, ea) {
                 cols: [[
                     {type: "checkbox"},
                     {field: 'id', width: 80, title: 'ID'},
-                    {field: 'title', minWidth: 80, title: '标题'},
+                    {field: 'title', minWidth: 80, title: '标题', edit:true},
                     {field: 'image', minWidth: 80, title: '封面', search: false, templet: ea.table.image},
                     {field: 'status', title: '状态', width: 100, search: 'select', selectList: {0: '禁用', 1: '启用'}, templet: ea.table.switch,tips:'显示|禁用'},
                     {field: 'top', title: '置顶', width: 100, search: 'select', selectList: {0: '关闭', 1: '置顶'}, templet: ea.table.switch,tips:'置顶|禁用'},

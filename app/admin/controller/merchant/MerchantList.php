@@ -11,11 +11,11 @@ use app\common\model\MerchantAccount;
 use think\App;
 
 /**
- * Class Merchant
+ * Class MerchantList
  * @package app\admin\controller\merchant
  * @ControllerAnnotation(title="商家管理")
  */
-class Merchant extends AdminController
+class MerchantList extends AdminController
 {
 
     use Curd;

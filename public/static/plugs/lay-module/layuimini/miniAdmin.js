@@ -84,7 +84,7 @@ define(["jquery", "miniMenu", "miniTheme", "miniTab"], function ($, miniMenu, mi
          * @param data
          */
         renderLogo: function (data) {
-            var html = '<a href="' + data.href + '"><img src="' + data.image + '" alt="logo"><h1>' + data.title + '</h1></a>';
+            var html = '<a href="' + data.href + '"><img src="' + data.image + '" alt="logo" style="border-radius: 20px"><h1>' + data.title + '</h1></a>';
             $('.layuimini-logo').html(html);
         },
 

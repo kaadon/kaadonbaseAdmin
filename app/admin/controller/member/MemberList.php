@@ -1,6 +1,6 @@
 <?php
 
-namespace app\admin\controller\management\member;
+namespace app\admin\controller\member;
 
 use app\admin\traits\Curd;
 use app\common\controller\AdminController;
@@ -13,7 +13,7 @@ use think\App;
 
 /**
  * Class MemberList
- * @package app\admin\controller\management\member
+ * @package app\admin\controller\member
  * @ControllerAnnotation(title="会员列表")
  */
 class MemberList extends AdminController

@@ -15,7 +15,7 @@ use function input;
 use function json;
 
 /**
- * Class Customers
+ * Class MemberWallet
  * @package app\admin\controller\member
  * @ControllerAnnotation(title="用户钱包")
  */

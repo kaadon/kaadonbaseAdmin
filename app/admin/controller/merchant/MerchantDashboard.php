@@ -11,7 +11,7 @@ use app\common\model\MerchantAccount;
 use think\App;
 
 /**
- * Class Merchant
+ * Class MerchantDashboard
  * @package app\admin\controller\merchant
  * @ControllerAnnotation(title="商家仪表盘管理")
  */
