@@ -14,24 +14,7 @@ define(["jquery", "easy-admin"], function ($, ea) {
     var Controller = {
 
         index: function () {
-            layui.use(['form'], function(){
-                var form = layui.form
-                    ,layer = layui.layer
-                //监听指定开关
-                form.on('switch(switchTest)', function(data){
-                    if(this.checked){
-                        layer.msg('开关checked：'+ (this.checked ? 'true' : 'false'), {
-                            offset: '6px'
-                        });
-                        layer.tips('温馨提示：请注意开关状态的文字可以随意定义，而不仅 仅是ON|OFF', data.othis)
-                    }else{
-                        layer.msg('开关： 关掉了', {
-                            offset: '6px'
-                        });
-                    }
-                    //do some ajax opeartiopns;
-                });
-            });
+
             ea.table.render({
                 init: init,
                 cols: [[

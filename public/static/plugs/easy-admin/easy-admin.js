@@ -316,6 +316,7 @@ define(["jquery", "tableSelect", "ckeditor", "compressor", "AppInfoParser"], fun
                 options.cols = admin.table.renderOperat(options.cols, options.elem);
 
                 // 初始化表格
+                console.log(options)
                 var newTable = table.render(options);
 
                 // 监听表格搜索开关显示

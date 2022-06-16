@@ -1,5 +1,5 @@
-define(["jquery", "easy-admin"], function ($, ea) {
-
+define(["jquery", "easy-admin", "vue"], function ($, ea, Vue) {
+    var table = layui.table;
     var init = {
         table_elem: '#currentTable',
         table_render_id: 'currentTableRenderId',
@@ -11,9 +11,14 @@ define(["jquery", "easy-admin"], function ($, ea) {
         modify_url: 'mall.goods/modify',
         stock_url: 'mall.goods/stock',
     };
+    var app = new Vue({
+        el: '#goods',
+        data: {
+            upload_type: '6666666'
+        }
+    });
 
     var Controller = {
-
         index: function () {
             ea.table.render({
                 init: init,
@@ -38,7 +43,7 @@ define(["jquery", "easy-admin"], function ($, ea) {
                     {field: 'market_price', width: 100, title: '市场价', templet: ea.table.price},
                     {field: 'discount_price', width: 100, title: '折扣价', templet: ea.table.price},
                     {field: 'total_stock', width: 100, title: '库存统计'},
-                    {field: 'stock', width: 100, title: '剩余库存'},
+                    {field: 'stock', width: 100, title: '剩余库存',filter:true},
                     {field: 'virtual_sales', width: 100, title: '虚拟销量'},
                     {field: 'sales', width: 80, title: '销量'},
                     {field: 'status', title: '状态', width: 85, selectList: {0: '禁用', 1: '启用'}, templet: ea.table.switch},
@@ -69,6 +74,7 @@ define(["jquery", "easy-admin"], function ($, ea) {
 
             ea.listen();
         },
+
         add: function () {
             ea.listen();
         },
