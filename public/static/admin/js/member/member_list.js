@@ -3,14 +3,14 @@ define(["jquery", "easy-admin"], function ($, ea) {
     var init = {
         table_elem: '#currentTable',
         table_render_id: 'currentTableRenderId',
-        index_url: 'management.member.member_list/index',
-        add_url: 'management.member.member_list/add',
-        edit_url: 'management.member.member_list/edit',
-        updateMobile_url: 'management.member.member_list/updateMobile',
-        delete_url: 'management.member.member_list/delete',
-        export_url: 'management.member.member_list/export',
-        modify_url: 'management.member.member_list/modify',
-        stock_url: 'management.member.member_list/stock',
+        index_url: 'member.member_list/index',
+        add_url: 'member.member_list/add',
+        edit_url: 'member.member_list/edit',
+        updateMobile_url: 'member.member_list/updateMobile',
+        delete_url: 'member.member_list/delete',
+        export_url: 'member.member_list/export',
+        modify_url: 'member.member_list/modify',
+        stock_url: 'member.member_list/stock',
         charge_url: 'merchant.member_wallet/charge',
     };
     var agentLv = [

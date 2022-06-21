@@ -1,10 +1,9 @@
 <?php
 
 
-
 namespace app\common\exception;
 
-use Exception;
+use Kaadon\Jwt\JwtException;
 use think\exception\Handle;
 use think\exception\HttpException;
 use think\exception\HttpResponseException;
@@ -15,7 +14,6 @@ use Throwable;
 
 class Anomaly extends Handle
 {
-
     private $msg = '内部错误,请及时联系系统管理员!';
 
     private $httpcode = 200;
@@ -24,35 +22,37 @@ class Anomaly extends Handle
 
     public function render($request, Throwable $e): Response
     {
-        if (Env::get('APP_DEBUG')){
+        if (Env::get('APP_DEBUG')) {
             // 开启 DEBUG 模式,调用系统原生异常处理
             return parent::render($request, $e);
         }
-
-        if ($e instanceof JwtAnomaly){
-            return json(['message' => $e->getMessage(),
-                'code' => 403,
-                'data' => [],],$this->httpcode);
-        }if ($e instanceof HttpException || $e instanceof HttpAnomaly){
-        $this->httpcode = $e->getStatusCode()?:$this->httpcode;
-    }else if ($e instanceof HttpResponseException){
-        $this->msg = $e->getResponse()->getData()?:$this->msg;
-    }else{
-        $this->msg = $e->getMessage()?:$this->msg;
-    }
+        if ($e instanceof JwtException) {
+            return json([
+                'message' => $e->getMessage(),
+                'code'    => 406,
+                'data'    => [],
+            ], 200);
+        }
+        if ($e instanceof HttpException || $e instanceof HttpAnomaly) {
+            $this->httpcode = $e->getStatusCode() ?: $this->httpcode;
+        } else if ($e instanceof HttpResponseException) {
+            $this->msg = $e->getResponse()->getData() ?: $this->msg;
+        } else {
+            $this->msg = $e->getMessage() ?: $this->msg;
+        }
         // 参数验证错误
         if ($e instanceof ValidateException) {
             $this->httpcode = 200;
         }
 
-        $this->errorcode = $e->getCode()?:$this->errorcode;
+        $this->errorcode = $e->getCode() ?: $this->errorcode;
 
         $resultDate = [
             'message' => $this->msg,
-            'code' => $this->errorcode,
-            'data' => [],
+            'code'    => $this->errorcode,
+            'data'    => [],
         ];
-        return json($resultDate,$this->httpcode);
+        return json($resultDate, $this->httpcode);
 
     }
 

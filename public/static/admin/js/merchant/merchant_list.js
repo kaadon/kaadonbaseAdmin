@@ -3,13 +3,13 @@ define(["jquery", "easy-admin"], function ($, ea) {
     var init = {
         table_elem: '#currentTable',
         table_render_id: 'currentTableRenderId',
-        index_url: 'merchant.merchant/index',
-        add_url: 'merchant.merchant/add',
-        edit_url: 'merchant.merchant/edit',
+        index_url: 'merchant.merchant_list/index',
+        add_url: 'merchant.merchant_list/add',
+        edit_url: 'merchant.merchant_list/edit',
         viewUser_url: 'merchant.members/index',
-        delete_url: 'merchant.merchant/delete',
-        export_url: 'merchant.merchant/export',
-        modify_url: 'merchant.merchant/modify',
+        delete_url: 'merchant.merchant_list/delete',
+        export_url: 'merchant.merchant_list/export',
+        modify_url: 'merchant.merchant_list/modify',
     };
 
     var Controller = {

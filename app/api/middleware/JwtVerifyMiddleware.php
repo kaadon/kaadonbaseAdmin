@@ -1,15 +1,17 @@
 <?php
-declare (strict_types = 1);
+/**
+ * Created by : PhpStorm
+ * Web: https://www.kaadon.com
+ * User: ipioo
+ * Date: 2022/1/10 03:49
+ */
 
 namespace app\api\middleware;
 
-use app\common\exception\JwtAnomaly;
-use think\Exception;
-use think\facade\Config;
+
+use app\common\model\MemberAccount;
+use Kaadon\Jwt\JwtException;
 use think\Response;
-use function app;
-use function error;
-use function jwt_verify;
 
 class JwtVerifyMiddleware
 {
@@ -19,40 +21,46 @@ class JwtVerifyMiddleware
      * @param \think\Request $request
      * @param \Closure $next
      * @return Response
-     * @throws \think\Exception
      */
-
-    public function handle(\think\Request $request, \Closure $next)
+    public function handle($request, \Closure $next)
     {
-        $Currentoute = strtolower($request->pathinfo());
-        $api_white_list = Config::get('jwt.api.white');
+        /*执行主体*/
+        try {
+            $JwtData = jwt_verify();
+        }catch (\Exception $exception){
+            throw new JwtException($exception->getMessage());
+        }
 
-        if (!in_array($Currentoute, $api_white_list)) {
-            $tokenBearer = app('request')->header('Authorization');
-            if (!$tokenBearer) {
-                throw new JwtAnomaly('token is must.');
-            }
-            $token = substr($tokenBearer, 7);
-//            $token = $tokenBearer;
-            if (!$token) {
-                throw new JwtAnomaly('token is required.');
-            }
-            try {
-                /*执行主体*/
-//                $JwtData = jwt_verify($token);
-//                $data = $JwtData->data;
-//                if (\think\facade\Request::ip() != $data->ip) {
-//                    throw new Exception('网络环境更换,请重新登录!');
-//                }
-//                if (!property_exists($data, 'type') || $data->type !== "merchant") {
-//                    throw new Exception('你无权限查看!');
-//                }
-//                $request->username = $data->id;
-                $request->username = 22;
-        } catch (\Exception $e) {
-                return error($e->getMessage());
+        $data = $JwtData->data;
+
+//             if (\think\facade\Request::ip() != $data->ip) {
+//                 throw new JwtAnomaly('网络环境更换,请重新登录!');
+//             }
+
+        if (!property_exists($data, 'type') || $data->type !== "customer") {
+            throw new JwtException('你无权限查看!');
+        }
+        //前置用户信息
+        $request->customer = $data;
+
+        //前置代理
+        $agentarray = explode('|', $request->customer->agent_line);
+        if (is_array($agentarray)) {
+            foreach ($agentarray as $key => $item) {
+                if ($item == 0 || $item == '') {
+                    unset($agentarray[$key]);
+                }
             }
         }
+        $status = MemberAccount::where('uuid',$request->customer->identification)->value('status');
+
+        if (!$status){
+            throw new JwtException('你的账户已被冻结!');
+        }
+
+        $request->agent = $agentarray;
+
+
         return $next($request);
     }
 }
